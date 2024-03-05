@@ -8,18 +8,25 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { NoteProps } from '@/pages/home'
 
 import { NoteAlertDelete } from './note-alert-delete'
 import { NoteDialogCreation } from './note-dialog-creation'
 import { NoteDialogOpened } from './note-dialog-opened'
 
-export function NoteCard() {
+interface NoteCardProps {
+  nodeData: NoteProps
+  updateNote: (note: NoteProps) => void
+  deleteNote: (id: string) => void
+}
+
+export function NoteCard({ nodeData, updateNote, deleteNote }: NoteCardProps) {
   return (
-    <Card className="w-full">
+    <Card id={nodeData.id} className="w-full">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="space-y-2">
-            <CardTitle>Meu título</CardTitle>
+            <CardTitle>{nodeData.title}</CardTitle>
             <CardDescription>Criado em 22/02/2024</CardDescription>
           </div>
           <div className="flex items-center gap-3">
@@ -27,27 +34,16 @@ export function NoteCard() {
               buttonVariant="outline"
               dialogTitle="Editar nota"
               buttonIcon={<Pencil className="h-4 w-4" />}
+              updateNote={updateNote}
+              noteData={nodeData}
             />
-            <NoteAlertDelete />
+            <NoteAlertDelete id={nodeData.id} deleteNote={deleteNote} />
           </div>
         </div>
       </CardHeader>
       <CardContent>
         <p className="max-h-32 max-w-3xl overflow-hidden truncate">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus amet
-          sequi maxime harum deleniti officiis, accusantium libero perspiciatis
-          ea autem corporis neque quidem, commodi tempore laborum magnam
-          adipisci eveniet ipsum?Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Minus amet sequi maxime harum deleniti officiis,
-          accusantium libero perspiciatis ea autem corporis neque quidem,
-          commodi tempore laborum magnam adipisci eveniet ipsum?Lorem ipsum
-          dolor sit amet consectetur adipisicing elit. Minus amet sequi maxime
-          harum deleniti officiis, accusantium libero perspiciatis ea autem
-          corporis neque quidem, commodi tempore laborum magnam adipisci eveniet
-          ipsum?Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus
-          amet sequi maxime harum deleniti officiis, accusantium libero
-          perspiciatis ea autem corporis neque quidem, commodi tempore laborum
-          magnam adipisci eveniet ipsum?
+          {nodeData.description}
         </p>
       </CardContent>
       <CardFooter>

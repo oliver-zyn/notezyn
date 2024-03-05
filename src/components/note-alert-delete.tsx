@@ -12,7 +12,16 @@ import {
 } from './ui/alert-dialog'
 import { Button } from './ui/button'
 
-export function NoteAlertDelete() {
+interface NoteAlertDeleteProps {
+  id: string
+  deleteNote: (id: string) => void
+}
+
+export function NoteAlertDelete({ id, deleteNote }: NoteAlertDeleteProps) {
+  function handleDeleteNote() {
+    deleteNote(id)
+  }
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -26,7 +35,9 @@ export function NoteAlertDelete() {
         </AlertDialogHeader>
         <AlertDialogFooter className="justify-start">
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction>Excluir</AlertDialogAction>
+          <AlertDialogAction onClick={handleDeleteNote}>
+            Excluir
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

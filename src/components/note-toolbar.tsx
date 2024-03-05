@@ -1,9 +1,16 @@
 import { Plus, Search } from 'lucide-react'
 
+import { NoteProps } from '@/pages/home'
+
 import { NoteDialogCreation } from './note-dialog-creation'
 import { Input } from './ui/input'
 
-export function NoteToolbar() {
+interface NoteToolbarProps {
+  notes: NoteProps[]
+  createNote: (note: NoteProps) => void
+}
+
+export function NoteToolbar({ createNote }: NoteToolbarProps) {
   return (
     <div className="mb-5 flex w-full items-center justify-between">
       <div className="relative flex items-center justify-end">
@@ -14,6 +21,7 @@ export function NoteToolbar() {
         buttonVariant="default"
         dialogTitle="Nova nota"
         buttonIcon={<Plus className="h-4 w-4" />}
+        createNote={createNote}
       />
     </div>
   )
