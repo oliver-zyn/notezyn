@@ -67,8 +67,8 @@ export function Home() {
       <div className="flex w-full flex-col items-center justify-center gap-5">
         {notes.length === 0 ? (
           <NoteListMessage
-            title="Você ainda não tem tarefas cadastradas"
-            subtitle="Crie tarefas e organize seus itens a fazer"
+            title="Você ainda não tem notas cadastradas"
+            subtitle="Crie notas e organize suas anotações"
             icon={<NotepadText className="h-14 w-14" />}
           />
         ) : filterNotes().length > 0 ? (
