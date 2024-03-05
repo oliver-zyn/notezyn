@@ -1,3 +1,5 @@
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { Pencil } from 'lucide-react'
 
 import {
@@ -27,7 +29,18 @@ export function NoteCard({ noteData, updateNote, deleteNote }: NoteCardProps) {
         <div className="flex items-center justify-between">
           <div className="space-y-2">
             <CardTitle>{noteData.title}</CardTitle>
-            <CardDescription>Criado em 22/02/2024</CardDescription>
+            <CardDescription>
+              {noteData.updated_at ? 'Atualizada ' : 'Criada '}
+              {formatDistanceToNow(
+                noteData.updated_at
+                  ? new Date(noteData.updated_at)
+                  : new Date(noteData.created_at!),
+                {
+                  addSuffix: true,
+                  locale: ptBR,
+                },
+              )}
+            </CardDescription>
           </div>
           <div className="flex items-center gap-3">
             <NoteDialogCreation

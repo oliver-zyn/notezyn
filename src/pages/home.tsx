@@ -11,6 +11,8 @@ export interface NoteProps {
   id: string
   title: string
   description: string
+  created_at?: Date
+  updated_at?: Date
 }
 
 export function Home() {
@@ -36,6 +38,7 @@ export function Home() {
       if (note.id === updateNote.id) {
         note.title = updateNote.title
         note.description = updateNote.description
+        note.updated_at = updateNote.updated_at
       }
       return note
     })

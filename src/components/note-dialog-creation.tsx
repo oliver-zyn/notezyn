@@ -67,15 +67,23 @@ export function NoteDialogCreation({
       return
     }
 
-    const newNote = {
-      id: noteData ? noteData.id : uuid(),
-      title,
-      description,
-    }
-
     if (noteData) {
-      updateNote!(newNote)
+      const updatedNote: NoteProps = {
+        id: noteData.id,
+        title,
+        description,
+        updated_at: new Date(),
+      }
+
+      updateNote!(updatedNote)
     } else {
+      const newNote: NoteProps = {
+        id: uuid(),
+        title,
+        description,
+        created_at: new Date(),
+      }
+
       createNote!(newNote)
       setTitle('')
       setDescription('')

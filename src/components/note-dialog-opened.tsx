@@ -1,3 +1,5 @@
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { saveAs } from 'file-saver'
 import {
   ArrowDownToLine,
@@ -60,7 +62,7 @@ export function NoteDialogOpened({ noteData }: NoteDialogOpenedProps) {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="default" size="sm">
-          <ArrowUpRightFromSquare className="mr-2 h-4 w-4" />
+          <ArrowUpRightFromSquare strokeWidth={2.1} className="mr-2 h-4 w-4" />
           Abrir nota
         </Button>
       </DialogTrigger>
@@ -69,7 +71,16 @@ export function NoteDialogOpened({ noteData }: NoteDialogOpenedProps) {
           <div className="space-y-2">
             <DialogTitle>Sua nota</DialogTitle>
             <DialogDescription className="text-sm">
-              Atualizada pela última vez em 24/11/2023
+              {noteData.updated_at ? 'Atualizada ' : 'Criada '}
+              {formatDistanceToNow(
+                noteData.updated_at
+                  ? new Date(noteData.updated_at)
+                  : new Date(noteData.created_at!),
+                {
+                  addSuffix: true,
+                  locale: ptBR,
+                },
+              )}
             </DialogDescription>
           </div>
         </DialogHeader>
@@ -83,7 +94,7 @@ export function NoteDialogOpened({ noteData }: NoteDialogOpenedProps) {
             {!copySuccess ? 'Copiar nota' : <Check size={20} />}
           </Button>
           <Button variant="default" onClick={handleDownloadNote}>
-            <ArrowDownToLine className="mr-2 h-4 w-4" />
+            <ArrowDownToLine strokeWidth={2.3} className="mr-2 h-4 w-4" />
             Baixar nota
           </Button>
         </DialogFooter>
