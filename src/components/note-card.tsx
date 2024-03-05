@@ -15,18 +15,18 @@ import { NoteDialogCreation } from './note-dialog-creation'
 import { NoteDialogOpened } from './note-dialog-opened'
 
 interface NoteCardProps {
-  nodeData: NoteProps
+  noteData: NoteProps
   updateNote: (note: NoteProps) => void
   deleteNote: (id: string) => void
 }
 
-export function NoteCard({ nodeData, updateNote, deleteNote }: NoteCardProps) {
+export function NoteCard({ noteData, updateNote, deleteNote }: NoteCardProps) {
   return (
-    <Card id={nodeData.id} className="w-full">
+    <Card className="w-full">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="space-y-2">
-            <CardTitle>{nodeData.title}</CardTitle>
+            <CardTitle>{noteData.title}</CardTitle>
             <CardDescription>Criado em 22/02/2024</CardDescription>
           </div>
           <div className="flex items-center gap-3">
@@ -35,19 +35,19 @@ export function NoteCard({ nodeData, updateNote, deleteNote }: NoteCardProps) {
               dialogTitle="Editar nota"
               buttonIcon={<Pencil className="h-4 w-4" />}
               updateNote={updateNote}
-              noteData={nodeData}
+              noteData={noteData}
             />
-            <NoteAlertDelete id={nodeData.id} deleteNote={deleteNote} />
+            <NoteAlertDelete id={noteData.id} deleteNote={deleteNote} />
           </div>
         </div>
       </CardHeader>
       <CardContent>
         <p className="max-h-32 max-w-3xl overflow-hidden truncate">
-          {nodeData.description}
+          {noteData.description}
         </p>
       </CardContent>
       <CardFooter>
-        <NoteDialogOpened />
+        <NoteDialogOpened noteData={noteData} />
       </CardFooter>
     </Card>
   )

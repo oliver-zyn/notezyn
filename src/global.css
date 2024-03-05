@@ -59,17 +59,15 @@
   }
 
   ::-webkit-scrollbar {
-    @apply w-2;
+    @apply w-2 h-2;
   }
   
   ::-webkit-scrollbar-track {
-    @apply bg-muted-foreground;
-    @apply rounded-md;
+    @apply bg-background;
   }
   
   ::-webkit-scrollbar-thumb {
-    @apply bg-muted;
-    @apply rounded-md;
+    @apply bg-muted-foreground;
   }
 }
 

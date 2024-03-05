@@ -1,17 +1,61 @@
-import { ArrowDownToLine, ArrowUpRightFromSquare, Copy } from 'lucide-react'
+import { saveAs } from 'file-saver'
+import {
+  ArrowDownToLine,
+  ArrowUpRightFromSquare,
+  Check,
+  Copy,
+} from 'lucide-react'
+import { useState } from 'react'
 
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { NoteProps } from '@/pages/home'
 
 import { Button } from './ui/button'
+import { toast } from './ui/use-toast'
 
-export function NoteDialogOpened() {
+interface NoteDialogOpenedProps {
+  noteData: NoteProps
+}
+
+export function NoteDialogOpened({ noteData }: NoteDialogOpenedProps) {
+  const [copySuccess, setCopySuccess] = useState(false)
+
+  function handleCopyNote() {
+    const noteContent = `${noteData.title}\n\n${noteData.description}`
+    navigator.clipboard.writeText(noteContent)
+    setCopySuccess(true)
+    setTimeout(() => {
+      setCopySuccess(false)
+    }, 2000)
+  }
+
+  function handleDownloadNote() {
+    try {
+      const noteContent = `${noteData.title}\n\n${noteData.description}`
+      const blob = new Blob([noteContent], { type: 'text/plain;charset=utf-8' })
+
+      saveAs(blob, `${noteData.title}.txt`)
+
+      toast({
+        description: 'Download realizado com sucesso!',
+        variant: 'default',
+      })
+    } catch (err) {
+      toast({
+        description: 'Ocorreu um erro ao baixar a nota',
+        variant: 'destructive',
+      })
+    }
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -24,52 +68,25 @@ export function NoteDialogOpened() {
         <DialogHeader>
           <div className="space-y-2">
             <DialogTitle>Sua nota</DialogTitle>
-            <DialogDescription>
-              Atualizada pela última vez 24/11/2023
+            <DialogDescription className="text-sm">
+              Atualizada pela última vez em 24/11/2023
             </DialogDescription>
           </div>
         </DialogHeader>
-        <div className="max-h-[400px] w-full overflow-scroll overflow-x-auto rounded-lg border bg-zinc-100 p-4 dark:bg-zinc-900">
-          <h2 className="text-2xl font-semibold">Titulo</h2>
-          <p className="mt-4 text-muted-foreground">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-            ipsam quod est nesciunt alias expedita fugit vitae eos temporibus
-            neque. Veritatis nulla eveniet voluptas fugit quasi fugiat minus sit
-            ipsam. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Nostrum ipsam quod est nesciunt alias expedita fugit vitae eos
-            temporibus neque. Veritatis nulla eveniet voluptas fugit quasi
-            fugiat minus sit ipsam. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Nostrum ipsam quod est nesciunt alias expedita
-            fugit vitae eos temporibus neque. Veritatis nulla eveniet voluptas
-            fugit quasi fugiat minus sit ipsam. Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Nostrum ipsam quod est nesciunt alias
-            expedita fugit vitae eos temporibus neque. Veritatis nulla eveniet
-            voluptas fugit quasi fugiat minus sit ipsam. Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Nostrum ipsam quod est nesciunt
-            alias expedita fugit vitae eos temporibus neque. Veritatis nulla
-            eveniet voluptas fugit quasi fugiat minus sit ipsam. Lorem ipsum
-            dolor sit amet consectetur adipisicing elit. Nostrum ipsam quod est
-            nesciunt alias expedita fugit vitae eos temporibus neque. Veritatis
-            nulla eveniet voluptas fugit quasi fugiat minus sit ipsam. Lorem
-            ipsum dolor sit amet consectetur adipisicing elit. Nostrum ipsam
-            quod est nesciunt alias expedita fugit vitae eos temporibus neque.
-            Veritatis nulla eveniet voluptas fugit quasi fugiat minus sit ipsam.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-            ipsam quod est nesciunt alias expedita fugit vitae eos temporibus
-            neque. Veritatis nulla eveniet voluptas fugit quasi fugiat minus sit
-            ipsam.
-          </p>
+        <div className="h-[400px] max-w-[calc(650px-3rem)] overflow-x-auto whitespace-pre-wrap rounded-lg bg-muted p-4">
+          <h2 className="text-2xl font-semibold">{noteData.title}</h2>
+          <p className="mt-4 text-muted-foreground">{noteData.description}</p>
         </div>
-        <div className="space-x-3">
-          <Button variant="default" className="max-w-40">
+        <DialogFooter className="gap-2 sm:gap-0">
+          <Button variant="secondary" onClick={handleCopyNote}>
+            <Copy className="mr-2 h-4 w-4" />
+            {!copySuccess ? 'Copiar nota' : <Check size={20} />}
+          </Button>
+          <Button variant="default" onClick={handleDownloadNote}>
             <ArrowDownToLine className="mr-2 h-4 w-4" />
             Baixar nota
           </Button>
-          <Button variant="secondary" className="max-w-40">
-            <Copy className="mr-2 h-4 w-4" />
-            Copiar nota
-          </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
