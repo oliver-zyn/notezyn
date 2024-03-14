@@ -2,6 +2,7 @@ import { Plus, Search } from 'lucide-react'
 
 import { NoteProps } from '@/pages/home'
 
+import { ModeToggle } from './mode-toggle'
 import { NoteDialogCreation } from './note-dialog-creation'
 import { Input } from './ui/input'
 
@@ -22,12 +23,15 @@ export function NoteToolbar({ createNote, onFilterChange }: NoteToolbarProps) {
         />
         <Search className="absolute mr-3 h-4 w-4" />
       </div>
-      <NoteDialogCreation
-        buttonVariant="default"
-        dialogTitle="Nova nota"
-        buttonIcon={<Plus className="h-4 w-4" strokeWidth={2.6} />}
-        createNote={createNote}
-      />
+      <div className="flex items-center gap-5">
+        <ModeToggle />
+        <NoteDialogCreation
+          buttonVariant="default"
+          dialogTitle="Nova nota"
+          buttonIcon={<Plus className="h-4 w-4" strokeWidth={2.6} />}
+          createNote={createNote}
+        />
+      </div>
     </div>
   )
 }

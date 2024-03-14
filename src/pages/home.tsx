@@ -1,5 +1,5 @@
 import { FilterX, NotepadText } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { NoteCard } from '@/components/note-card'
 import { NoteHeader } from '@/components/note-header'
@@ -19,9 +19,15 @@ export function Home() {
   const [notes, setNotes] = useState<NoteProps[]>([])
   const [filterText, setFilterText] = useState<string>('')
 
+  useEffect(() => {
+    loadNotesFromLocalStorage()
+  }, [])
+
   function createNote(newNote: NoteProps) {
     setNotes((state) => {
-      return [...state, newNote]
+      const newNotes = [...state, newNote]
+      saveNotesToLocalStorage(newNotes)
+      return newNotes
     })
   }
 
@@ -31,6 +37,7 @@ export function Home() {
     })
 
     setNotes(newNotes)
+    saveNotesToLocalStorage(newNotes)
   }
 
   function updateNote(updateNote: NoteProps) {
@@ -44,6 +51,7 @@ export function Home() {
     })
 
     setNotes(newNotes)
+    saveNotesToLocalStorage(newNotes)
   }
 
   function filterNotes() {
@@ -53,6 +61,17 @@ export function Home() {
         note.description.toLowerCase().includes(filterText.toLowerCase())
       )
     })
+  }
+
+  function saveNotesToLocalStorage(notes: NoteProps[]) {
+    localStorage.setItem('notes', JSON.stringify(notes))
+  }
+
+  function loadNotesFromLocalStorage() {
+    const savedNotes = localStorage.getItem('notes')
+    if (savedNotes) {
+      setNotes(JSON.parse(savedNotes))
+    }
   }
 
   return (
